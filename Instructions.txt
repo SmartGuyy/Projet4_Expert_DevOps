@@ -1,0 +1,60 @@
+## first increase swap space (at least 4GB)
+tutorial :
+https://www.golinuxcloud.com/extend-resize-primary-partition-non-lvm-linux/
+
+## INSTALL GITLAB ##
+# Vagrant already provide VM with 2GB swapfile, but Gitlab needs 4GB so we need to resize it first
+
+swapoff /swapfile
+dd if=/dev/zero of=/swapfile bs=1M count=4096 oflag=append conv=notrunc
+mkswap /swapfile
+swapon /swapfile
+
+# For system performance purposes, it is recommended to configure the kernel's swappiness setting to a low value like 10:
+
+echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+cat /proc/sys/vm/swappiness
+
+# Use the following commands to setup a hostname, gitlab, and an FQDN, gitlab.example.com, for the machine:
+
+sudo hostnamectl set-hostname gitlab
+cat <<EOF | sudo tee /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+203.0.113.1 gitlab.example.com gitlab
+EOF
+
+## Modify firewall rules -- Vagrant provides none on Centos 8 ##
+
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo systemctl reload firewalld.service
+
+## install Epel YUM repo ## 
+
+sudo dnf install -y epel-release
+sudo dnf -y update && sudo shutdown -r now
+
+## Install required dependencies ##
+
+sudo dnf install -y curl policycoreutils-python openssh-server openssh-clients
+
+## if you want to use Postfix to send notification messages, you need to install Postfix and modify firewall rules as follows: ##
+
+sudo dnf install -y postfix
+sudo systemctl enable postfix.service
+sudo systemctl start postfix.service
+sudo firewall-cmd --permanent --add-service=smtp
+sudo firewall-cmd --permanent --add-service=pop3
+sudo firewall-cmd --permanent --add-service=imap
+sudo firewall-cmd --permanent --add-service=smtps
+sudo firewall-cmd --permanent --add-service=pop3s
+sudo firewall-cmd --permanent --add-service=imaps
+sudo firewall-cmd --reload
+
+## Setup the GitLab RPM repo and then install GitLab CE ##
+
+cd
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+sudo EXTERNAL_URL="http://gitlab.example.com" dnf install -y gitlab-ce
