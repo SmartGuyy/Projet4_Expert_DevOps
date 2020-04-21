@@ -3,6 +3,8 @@
 
 sudo dnf update -y 
 
+## general tools installation ##
+
 # installing GUI tools
 sudo dnf groupinstall -y gnome-desktop
 sudo dnf install -y xorg*
@@ -16,6 +18,25 @@ systemctl set-default graphical.target
 
 # installing tools
 sudo dnf install -y device-mapper-persistent-data lvm2 nano firefox
+
+# set keyboard to french
+sudo localectl set-keymap fr
+
+## docker installation ##
+
+# to add docker repository
+dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+# to add latest docker-ce version
+dnf install docker-ce --nobest -y
+
+# enabling and starting docker
+systemctl start docker
+systemctl enable docker
+
+# now we download gitlab runner image and start it with corrrect parameters
+
+docker run -d --name gitlab-runner --restart always -v /srv/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
 
 ## installing pelican and gitlab ##
 
@@ -44,16 +65,16 @@ cat <<EOF | sudo tee /etc/hosts
 127.0.0.1 gitlab.example.com gitlab
 EOF
 
-## install Epel YUM repo ## 
+# install Epel YUM repo #
 
 sudo dnf install -y epel-release
 sudo dnf -y update
 
-## Install required dependencies ##
+# Install required dependencies #
 
 sudo dnf install -y curl openssh-server openssh-clients
 
-## Setup the GitLab RPM repo and then install GitLab CE ##
+# Setup the GitLab RPM repo and then install GitLab CE #
 
 cd
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
@@ -62,7 +83,5 @@ sudo EXTERNAL_URL="http://gitlab.example.com" dnf install -y gitlab-ce
 # configure and set online Gitlab ressources
 sudo gitlab-ctl reconfigure
 
-# set keyboard to french
-sudo localectl set-keymap fr
 
 reboot now
