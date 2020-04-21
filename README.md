@@ -1,4 +1,4 @@
-# Projet4_Expert_DevOps
+# Projet4_Expert_DevOps TO REWRITE
  
 Install Vagrant and Virtualbox on your local machine.
 
@@ -12,7 +12,14 @@ After execution, it will restart the VM so the GUI can initialize.
 
 Then you could do a curl or download Firefox to visit 127.0.0.1 and check that nginx is avalaible.
 
+STEPS : 
+--> vagrant up in this repo and wait till script has finished running
+--> connect to gitlab.example.com 
+--> import pelican gitlab pages repository https://gitlab.com/pages/pelican 
+--> configure Docker to create a container "Gitlab runner" that will execute .gitlab-ci.yml instructions of the project
+--> 
 Sources : 
 http://docs.getpelican.com/en/3.6.3/install.html
 http://docs.getpelican.com/en/3.6.3/publish.html#make
+https://docs.gitlab.com/runner/install/docker.html
 https://tecadmin.net/install-gitlab-on-centos-8/
