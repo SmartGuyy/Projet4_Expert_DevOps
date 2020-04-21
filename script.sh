@@ -17,10 +17,27 @@ systemctl isolate graphical.target
 systemctl set-default graphical.target
 
 # installing tools
-sudo dnf install -y device-mapper-persistent-data lvm2 nano firefox
+sudo dnf install -y device-mapper-persistent-data lvm2 nano firefox git
 
 # set keyboard to french
 sudo localectl set-keymap fr
+
+## Gitlab runner installation ##
+
+# to download gitlab runner
+sudo curl -LJO https://gitlab-runner-downloads.s3.amazonaws.com/latest/rpm/gitlab-runner_amd64.rpm
+
+# to install it
+sudo rpm -Uvh gitlab-runner_amd64.rpm
+
+# download gitlab-runner binaries
+sudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
+
+# to configure it
+sudo chmod +x /usr/local/bin/gitlab-runner
+sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
+sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
+sudo gitlab-runner start
 
 ## docker installation ##
 
@@ -34,9 +51,6 @@ dnf install docker-ce --nobest -y
 systemctl start docker
 systemctl enable docker
 
-# now we download gitlab runner image and start it with corrrect parameters
-
-docker run -d --name gitlab-runner --restart always -v /srv/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
 
 ## installing pelican and gitlab ##
 
