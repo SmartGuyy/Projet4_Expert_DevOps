@@ -11,3 +11,8 @@ Then you just need to do "vagrant up" from the folder and it will automatically 
 After execution, it will restart the VM so the GUI can initialize.
 
 Then you could do a curl or download Firefox to visit 127.0.0.1 and check that nginx is avalaible.
+
+Sources : 
+http://docs.getpelican.com/en/3.6.3/install.html
+http://docs.getpelican.com/en/3.6.3/publish.html#make
+https://tecadmin.net/install-gitlab-on-centos-8/
