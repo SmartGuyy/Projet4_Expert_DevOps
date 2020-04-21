@@ -22,7 +22,7 @@ sudo hostnamectl set-hostname gitlab
 cat <<EOF | sudo tee /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
-203.0.113.1 gitlab.example.com gitlab
+127.0.0.1 gitlab.example.com gitlab
 EOF
 
 ## Modify firewall rules -- Vagrant provides none on Centos 8 ##

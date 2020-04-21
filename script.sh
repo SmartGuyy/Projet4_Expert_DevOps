@@ -27,6 +27,48 @@ systemctl set-default graphical.target
 # installing tools
 dnf install -y device-mapper-persistent-data lvm2 nano
 
+# installing pelican and gitlab
+
+# install python 2
+
+dnf install python2 -y
+
+# install pelican with python2
+
+pip2 install pelican
+pip2 install Markdown
+pip2 install typogrify
+
+# For system performance purposes, it is recommended to configure the kernel's swappiness setting to a low value like 10:
+
+echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+cat /proc/sys/vm/swappiness
+
+# Use the following commands to setup a hostname, gitlab, and an FQDN, gitlab.example.com, for the machine:
+
+sudo hostnamectl set-hostname gitlab
+cat <<EOF | sudo tee /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+127.0.0.1 gitlab.example.com gitlab
+EOF
+
+## install Epel YUM repo ## 
+
+sudo dnf install -y epel-release
+sudo dnf -y update && sudo shutdown -r now
+
+## Install required dependencies ##
+
+sudo dnf install -y curl policycoreutils-python openssh-server openssh-clients
+
+## Setup the GitLab RPM repo and then install GitLab CE ##
+
+cd
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+sudo EXTERNAL_URL="http://gitlab.example.com" dnf install -y gitlab-ce
+
 # enabling and starting docker
 # systemctl start docker
 # systemctl enable docker
@@ -56,5 +98,7 @@ localectl set-keymap fr
 # mv /usr/bin/firefox /usr/bin/backup_firefox
 # echo "exclude=firefox" >> /etc/dnf/dnf.conf
 # ln -s /usr/local/firefox/firefox /usr/bin/firefox
+
+echo "Please now increase root partition and then increase swap space."
 
 reboot now
