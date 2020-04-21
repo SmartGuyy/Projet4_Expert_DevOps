@@ -6,9 +6,9 @@ https://www.golinuxcloud.com/extend-resize-primary-partition-non-lvm-linux/
 # Vagrant already provide VM with 2GB swapfile, but Gitlab needs 4GB so we need to resize it first
 
 swapoff /swapfile
-dd if=/dev/zero of=/swapfile bs=1M count=4096 oflag=append conv=notrunc
-mkswap /swapfile
-swapon /swapfile
+dd if=/dev/zero of=/dev/mapper/cl-swap bs=1M count=4096 oflag=append conv=notrunc
+mkswap /dev/mapper/cl-swap
+swapon /dev/mapper/cl-swap
 
 # For system performance purposes, it is recommended to configure the kernel's swappiness setting to a low value like 10:
 
@@ -58,3 +58,6 @@ sudo firewall-cmd --reload
 cd
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
 sudo EXTERNAL_URL="http://gitlab.example.com" dnf install -y gitlab-ce
+
+# configure and set online gitlab ressources
+sudo gitlab-ctl reconfigure
