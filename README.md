@@ -14,12 +14,15 @@ Then you could do a curl or download Firefox to visit 127.0.0.1 and check that n
 
 STEPS : 
 --> vagrant up in this repo and wait till script has finished running
---> edit /etc/gitlab/gitlab.rb and change external_url for the url you want, also enable gitlab pages by uncommenting line "pages_external_url"
---> configure "Gitlab runner" that will execute .gitlab-ci.yml instructions of the project
+--> edit /etc/gitlab/gitlab.rb and change external_url for the url you want"
+--> configure "Gitlab runner" (shell) that will execute .gitlab-ci.yml instructions of the project
 --> create new repository for Pelican, add permissions so gitlab-runner can read/write in it
 --> initialize repository : "pelican quickstart" then sync with gitlab repo
 --> create .gitlab-ci.yml so it publishes modifications (it will trigger after any modification that is not excluded in .gitignore)
-
+--> create Github repository called username.github.io 
+--> go on the settings of this repository and import a public key that you generated from VM (ssh-keygen -t rsa -C "your_mail_adress_used_github@xxx.com")
+--> clone repository WITH SSH
+--> verify that account executed by gitlab-runner can add new files, commit and push them to this repository without username/password
 
 Sources : 
 http://docs.getpelican.com/en/3.6.3/install.html
@@ -28,5 +31,6 @@ https://docs.gitlab.com/runner/install/docker.html
 https://tecadmin.net/install-gitlab-on-centos-8/
 https://docs.gitlab.com/ee/ci/runners/
 https://docs.gitlab.com/runner/register/
-https://www.jamescoyle.net/how-to/2801-gitlab-runner-error-sudo-no-tty-present-and-no-askpass-program-specified
-https://docs.gitlab.com/ee/administration/pages/
+https://zzpanqing.github.io/2017/02/28/github-push-without-username-and-password.html
+https://pages.github.com/
+
