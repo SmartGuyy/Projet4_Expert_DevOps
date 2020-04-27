@@ -23,8 +23,9 @@ STEPS :
 --> go on the settings of this repository and import a public key that you generated from VM (ssh-keygen -t rsa -C "your_mail_adress_used_github@xxx.com")
 --> clone github.io repository WITH SSH
 --> verify that account executed by gitlab-runner can add new files, commit and push them to this repository without username/password
---> modify Pelican configuration file so output path is the your "[username].gitlab.io" repository
---> create .gitlab-ci.yml so it removes your Github repository content, "make publish", "cd" to Github repository, "git add.", "git commit -m "your message"" and "git push -u".
+--> modify Pelican configuration file so output path is your gitlab.io local repository
+--> create .gitlab-ci.yml so it "mv -fn" content of /srv/blog/public directory (or whatever path to your Pelican local repository) to your gitlab.io repository, 
+then "make publish", "cd" to Github repository, "git add.", "git commit -m "your message"" and "git push -u".
 
 
 Sources : 
