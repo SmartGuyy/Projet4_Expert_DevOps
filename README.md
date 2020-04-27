@@ -16,13 +16,16 @@ STEPS :
 --> vagrant up in this repo and wait till script has finished running
 --> edit /etc/gitlab/gitlab.rb and change external_url for the url you want"
 --> configure "Gitlab runner" (shell) that will execute .gitlab-ci.yml instructions of the project
---> create new repository for Pelican, add permissions so gitlab-runner can read/write in it
+--> create new repository for Pelican with Gitlab-runner account, add permissions so gitlab-runner can read/write in it
 --> initialize repository : "pelican quickstart" then sync with gitlab repo
 --> create .gitlab-ci.yml so it publishes modifications (it will trigger after any modification that is not excluded in .gitignore)
---> create Github repository called username.github.io 
+--> create Github repository called [username].github.io 
 --> go on the settings of this repository and import a public key that you generated from VM (ssh-keygen -t rsa -C "your_mail_adress_used_github@xxx.com")
---> clone repository WITH SSH
+--> clone github.io repository WITH SSH
 --> verify that account executed by gitlab-runner can add new files, commit and push them to this repository without username/password
+--> modify Pelican configuration file so output path is the your "[username].gitlab.io" repository
+--> create .gitlab-ci.yml so it removes your Github repository content, "make publish", "cd" to Github repository, "git add.", "git commit -m "your message"" and "git push -u".
+
 
 Sources : 
 http://docs.getpelican.com/en/3.6.3/install.html
