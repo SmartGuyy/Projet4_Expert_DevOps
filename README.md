@@ -24,8 +24,15 @@ STEPS :
 --> clone github.io repository WITH SSH
 --> verify that account executed by gitlab-runner can add new files, commit and push them to this repository without username/password
 --> modify Pelican configuration file so output path is your gitlab.io local repository
---> create .gitlab-ci.yml so it "mv -fn" content of /srv/blog/public directory (or whatever path to your Pelican local repository) to your gitlab.io repository, 
-then "make publish", "cd" to Github repository, "git add.", "git commit -m "your message"" and "git push -u".
+--> create .gitlab-ci.yml with following commands :
+- "rsync -a -r" content of /srv/blog/public directory (or whatever path to your Pelican local repository) to your gitlab.io local repository
+- "make publish" 
+- "cd" to Github.io local repository, 
+- "git add." 
+- "git commit -m "your message""
+- "git push -u".
+
+--> Now write articles from Gitlab on your Pelican's repository and it will be automatically updated on your github.io static website at each commit.
 
 
 Sources : 
