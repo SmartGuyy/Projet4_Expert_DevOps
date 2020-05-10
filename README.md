@@ -27,7 +27,7 @@ STEPS :
 --> create .gitlab-ci.yml with following commands :
 - "rsync -a -r" content of /srv/blog/public directory (or whatever path to your Pelican local repository) to your gitlab.io local repository
 - "make publish" 
-- "cd" to Github.io local repository, 
+- "cd [Github.io local repository]", 
 - "git add." 
 - "git commit -m "your message""
 - "git push -u".
