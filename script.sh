@@ -25,12 +25,16 @@ sudo localectl set-keymap fr
 ## Gitlab runner installation ##
 
 # to download gitlab runner
+# option "L" for location (this option will make curl redo the request on the new place if it was redirected)
+# option "O" writes output to a local file named like the remote file we get 
+# option "J" tells the -O, --remote-name option to use the server-specified Content-Disposition filename instead of extracting a filename from the URL.
 sudo curl -LJO https://gitlab-runner-downloads.s3.amazonaws.com/latest/rpm/gitlab-runner_amd64.rpm
 
 # to install it
 sudo rpm -Uvh gitlab-runner_amd64.rpm
 
 # download gitlab-runner binaries
+# option "L" for location (this option will make curl redo the request on the new place if it was redirected)
 sudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
 
 # to configure it
@@ -65,7 +69,7 @@ pip2 install Markdown
 pip2 install typogrify
 
 # For system performance purposes, it is recommended to configure the kernel's swappiness setting to a low value like 10:
-
+# swappiness means how much and often Linux Kernel will copy RAM contents to SWAP
 echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 cat /proc/sys/vm/swappiness
@@ -91,6 +95,7 @@ sudo dnf install -y curl openssh-server openssh-clients
 # Setup the GitLab RPM repo and then install GitLab CE #
 
 cd
+# s option for "silent mode" - S for "show error"
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
 sudo EXTERNAL_URL="http://gitlab.example.com" dnf install -y gitlab-ce
 
